@@ -3,7 +3,7 @@ from sympy import *
 tokens = (
     'NAME','NUMBER',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
-    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO'
+    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO', 'EQUALITYTOKEN'
     )
 
 # Tokens for simple symbols
@@ -21,6 +21,10 @@ t_COMMA = r'\,'
 def t_SUBJECT_TO(t):
 	r'subject\ to'
 	return t
+
+def t_EQUALITYTOKEN(t):
+    r'=='
+    return t
 
 def t_NUMBER(t):
     r'\d+'
@@ -95,8 +99,8 @@ def p_statement_optimization(t):
     optimization_formulations.append({"problem": t, "constraints": []})
 
 def p_statement_subject_to(t):
-	'statement : SUBJECT_TO expression'
-	optimization_formulations[-1]["constraints"].append(t)
+    'statement : SUBJECT_TO expression EQUALITYTOKEN expression'
+    optimization_formulations[-1]["constraints"].append(t)
 
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
@@ -142,16 +146,17 @@ def parse_optimization_model(user_string, compiler_type="actual"):
 
     objective_function = optimization_formulations[0]["problem"][2]
     constraints = []
-    variables = name
+    variables = names
     for i in range(len(optimization_formulations[0]["constraints"])):
-        constraints.append(optimization_formulations[0]["constraints"][i][2])
+        constraints.append([optimization_formulations[0]["constraints"][i][2], optimization_formulations[0]["constraints"][i][3], optimization_formulations[0]["constraints"][i][4]])
 
     return objective_function, constraints, variables
 
 if __name__ == "__main__":
     d = """
-min 5*x + 8*x
-subject to x*2
+min 5*x + 8*y
+subject to x + y == 1
     """
-    parse_optimization_model(d.strip())
+    objective_function, constraints, variables = parse_optimization_model(d.strip())
+    import pdb; pdb.set_trace()
 

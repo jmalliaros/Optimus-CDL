@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightUMINUSCOMMA DIVIDE EQUALS LPAREN MIN MINUS NAME NUMBER PLUS RPAREN SUBJECT_TO TIMESstatement : NAME EQUALS expressionstatement : expressionexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : MINUS expression %prec UMINUSstatement : MIN expression\n    \t\t\t | MIN expression COMMA expression\n    \t\t\t | MIN expression COMMA expression COMMA expression\n    statement : SUBJECT_TO expressionexpression : LPAREN expression RPARENexpression : NUMBERexpression : NAME'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightUMINUSCOMMA DIVIDE EQUALITYTOKEN EQUALS LPAREN MIN MINUS NAME NUMBER PLUS RPAREN SUBJECT_TO TIMESstatement : NAME EQUALS expressionstatement : expressionexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : MINUS expression %prec UMINUSstatement : MIN expression\n    \t\t\t | MIN expression COMMA expression\n    \t\t\t | MIN expression COMMA expression COMMA expression\n    statement : SUBJECT_TO expression EQUALITYTOKEN expressionexpression : LPAREN expression RPARENexpression : NUMBERexpression : NAME'
     
-_lr_action_items = {'NAME':([0,4,5,6,7,9,10,11,12,13,24,27,],[2,15,15,15,15,15,15,15,15,15,15,15,]),'MIN':([0,],[4,]),'SUBJECT_TO':([0,],[5,]),'MINUS':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,],[6,-14,11,6,6,6,6,-13,6,6,6,6,6,11,-14,11,-7,11,11,-3,-4,-5,-6,6,-12,11,6,11,]),'LPAREN':([0,4,5,6,7,9,10,11,12,13,24,27,],[7,7,7,7,7,7,7,7,7,7,7,7,]),'NUMBER':([0,4,5,6,7,9,10,11,12,13,24,27,],[8,8,8,8,8,8,8,8,8,8,8,8,]),'$end':([1,2,3,8,14,15,16,17,19,20,21,22,23,25,26,28,],[0,-14,-2,-13,-8,-14,-11,-7,-1,-3,-4,-5,-6,-12,-9,-10,]),'EQUALS':([2,],[9,]),'PLUS':([2,3,8,14,15,16,17,18,19,20,21,22,23,25,26,28,],[-14,10,-13,10,-14,10,-7,10,10,-3,-4,-5,-6,-12,10,10,]),'TIMES':([2,3,8,14,15,16,17,18,19,20,21,22,23,25,26,28,],[-14,12,-13,12,-14,12,-7,12,12,12,12,-5,-6,-12,12,12,]),'DIVIDE':([2,3,8,14,15,16,17,18,19,20,21,22,23,25,26,28,],[-14,13,-13,13,-14,13,-7,13,13,13,13,-5,-6,-12,13,13,]),'COMMA':([8,14,15,17,20,21,22,23,25,26,],[-13,24,-14,-7,-3,-4,-5,-6,-12,27,]),'RPAREN':([8,15,17,18,20,21,22,23,25,],[-13,-14,-7,25,-3,-4,-5,-6,-12,]),}
+_lr_action_items = {'NAME':([0,4,5,6,7,9,10,11,12,13,24,25,29,],[2,15,15,15,15,15,15,15,15,15,15,15,15,]),'MIN':([0,],[4,]),'SUBJECT_TO':([0,],[5,]),'MINUS':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,],[6,-14,11,6,6,6,6,-13,6,6,6,6,6,11,-14,11,-7,11,11,-3,-4,-5,-6,6,6,-12,11,11,6,11,]),'LPAREN':([0,4,5,6,7,9,10,11,12,13,24,25,29,],[7,7,7,7,7,7,7,7,7,7,7,7,7,]),'NUMBER':([0,4,5,6,7,9,10,11,12,13,24,25,29,],[8,8,8,8,8,8,8,8,8,8,8,8,8,]),'$end':([1,2,3,8,14,15,17,19,20,21,22,23,26,27,28,30,],[0,-14,-2,-13,-8,-14,-7,-1,-3,-4,-5,-6,-12,-9,-11,-10,]),'EQUALS':([2,],[9,]),'PLUS':([2,3,8,14,15,16,17,18,19,20,21,22,23,26,27,28,30,],[-14,10,-13,10,-14,10,-7,10,10,-3,-4,-5,-6,-12,10,10,10,]),'TIMES':([2,3,8,14,15,16,17,18,19,20,21,22,23,26,27,28,30,],[-14,12,-13,12,-14,12,-7,12,12,12,12,-5,-6,-12,12,12,12,]),'DIVIDE':([2,3,8,14,15,16,17,18,19,20,21,22,23,26,27,28,30,],[-14,13,-13,13,-14,13,-7,13,13,13,13,-5,-6,-12,13,13,13,]),'COMMA':([8,14,15,17,20,21,22,23,26,27,],[-13,24,-14,-7,-3,-4,-5,-6,-12,29,]),'EQUALITYTOKEN':([8,15,16,17,20,21,22,23,26,],[-13,-14,25,-7,-3,-4,-5,-6,-12,]),'RPAREN':([8,15,17,18,20,21,22,23,26,],[-13,-14,-7,26,-3,-4,-5,-6,-12,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'expression':([0,4,5,6,7,9,10,11,12,13,24,27,],[3,14,16,17,18,19,20,21,22,23,26,28,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'expression':([0,4,5,6,7,9,10,11,12,13,24,25,29,],[3,14,16,17,18,19,20,21,22,23,27,28,30,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,18 +27,18 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> NAME EQUALS expression','statement',3,'p_statement_assign','optimus_parser.py',66),
-  ('statement -> expression','statement',1,'p_statement_expr','optimus_parser.py',70),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','optimus_parser.py',74),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','optimus_parser.py',75),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','optimus_parser.py',76),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','optimus_parser.py',77),
-  ('expression -> MINUS expression','expression',2,'p_expression_uminus','optimus_parser.py',85),
-  ('statement -> MIN expression','statement',2,'p_statement_optimization','optimus_parser.py',89),
-  ('statement -> MIN expression COMMA expression','statement',4,'p_statement_optimization','optimus_parser.py',90),
-  ('statement -> MIN expression COMMA expression COMMA expression','statement',6,'p_statement_optimization','optimus_parser.py',91),
-  ('statement -> SUBJECT_TO expression','statement',2,'p_statement_subject_to','optimus_parser.py',96),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','optimus_parser.py',100),
-  ('expression -> NUMBER','expression',1,'p_expression_number','optimus_parser.py',104),
-  ('expression -> NAME','expression',1,'p_expression_name','optimus_parser.py',108),
+  ('statement -> NAME EQUALS expression','statement',3,'p_statement_assign','optimus_parser.py',72),
+  ('statement -> expression','statement',1,'p_statement_expr','optimus_parser.py',76),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','optimus_parser.py',80),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','optimus_parser.py',81),
+  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','optimus_parser.py',82),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','optimus_parser.py',83),
+  ('expression -> MINUS expression','expression',2,'p_expression_uminus','optimus_parser.py',91),
+  ('statement -> MIN expression','statement',2,'p_statement_optimization','optimus_parser.py',95),
+  ('statement -> MIN expression COMMA expression','statement',4,'p_statement_optimization','optimus_parser.py',96),
+  ('statement -> MIN expression COMMA expression COMMA expression','statement',6,'p_statement_optimization','optimus_parser.py',97),
+  ('statement -> SUBJECT_TO expression EQUALITYTOKEN expression','statement',4,'p_statement_subject_to','optimus_parser.py',102),
+  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','optimus_parser.py',106),
+  ('expression -> NUMBER','expression',1,'p_expression_number','optimus_parser.py',110),
+  ('expression -> NAME','expression',1,'p_expression_name','optimus_parser.py',114),
 ]
