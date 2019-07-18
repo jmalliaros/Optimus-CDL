@@ -1,8 +1,102 @@
-<h1>Optimus</h1>
-<form action="" method="post" novalidate>
+<!--
+  <form action="" method="post" novalidate>
     <p>
         {{ form.data_input().equation.label }}<br>
         {{ form.data_input().equation(size=32) }}
     </p>
     <a href="/compute">Compute</a>
 </form>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>START</title>
+  <meta name="description" value="The search engine that doesn't track you. Learn More.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="./static/css/colors.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/modal.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <link rel="icon" type="image/png" href="./static/img/se.png">
+  <meta name="author" value="vanGato">
+</head>
+<body>
+  <div class="index">
+    <section class="index__header">
+        <img width="400px" src="static/img/logo2.png"/>
+<!--       <ul class="index__nav">
+        <li class="index__active"><a>Web</a></li>
+        <li><a href="serp.htm">Images</a></li>
+        <li><a href="serp.htm">Videos</a></li>
+        <li><a href="serp.htm">News</a></li>
+      </ul> -->
+      <br>
+      <div class="index__search">
+        <form action="serp.htm" methode="GET">
+          <textarea class="outer" id="programming_box"></textarea>
+          <br>
+          <center>
+            <button class="btn" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
+              Compile
+              <div class="index__ico"></div>
+            </button>
+            <button class="btn" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
+              I'm feeling lucky
+              <div class="index__ico"></div>
+            </button>
+          </center>
+        </form>
+      </div>
+    </section>
+  </div>
+  <!-- Modal -->
+  <div class="modal" id="about" aria-hidden="true">
+    <div class="modal__dialog">
+      <div class="modal__header">
+        <h2>About</h2>
+        <a href="#" class="modal__close" aria-hidden="true">×</a>
+      </div>
+      <div class="modal__body">
+        <strong>Lorem Ipsum</strong><br>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+      <div class="modal__footer">
+        <p>Last Update 01.01.2019</p>
+      </div>
+    </div>
+  </div>
+  <!-- /Modal -->
+</body>
+
+<!-- Create a simple CodeMirror instance -->
+<link rel="stylesheet" href="static/css/codemirror.css">
+<script src="static/js/codemirror.js"></script>
+
+
+<style>
+      .CodeMirror {
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.2);
+    height: auto;
+      }
+
+    html{
+      arial,sans-serif
+    }
+</style>
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("programming_box"), {
+    viewportMargin: Infinity,
+    lineNumbers: true
+  });
+
+  $(document).ready(function(){
+    editor.display.input.focus()
+  });
+</script>
+
+
+
+
+
+</html>
