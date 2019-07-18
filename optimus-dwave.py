@@ -11,9 +11,9 @@ dimodSampler = dimod.ExactSolver()
 ## EXAMPLE Problem -> Replace with general form
 binArr = []
 index = 0
-for i in range(1,5):
-        binArr.append(Binary('s'+str(i)))
-s1,s2,s3,s4,s5 = sum(binArr[:3]),sum(binArr[3:6]),sum(binArr[6:9]),sum(binArr[9:12]),sum(binArr[12:15])
+for i in range(0,5):
+        binArr.append(Binary('s'+str(i+1)))
+s1,s2,s3,s4,s5 = binArr[0], binArr[1], binArr[2], binArr[3], binArr[4]
 H = (s1+2*s2+3*s3+4*s4+5*s5-8*3)**2 + (s1+s2+s3+s4+s5-3*3)**2
 
 def get_embedding_with_short_chain(J: dict, tries: int = 5,
