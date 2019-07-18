@@ -140,7 +140,13 @@ def parse_optimization_model(user_string, compiler_type="actual"):
         for ff in user_string.split("\n"):
             parser.parse(ff)
 
-    return optimization_formulations
+    objective_function = optimization_formulations[0]["problem"][2]
+    constraints = []
+    variables = name
+    for i in range(len(optimization_formulations[0]["constraints"])):
+        constraints.append(optimization_formulations[0]["constraints"][i][2])
+
+    return objective_function, constraints, variables
 
 if __name__ == "__main__":
     d = """
