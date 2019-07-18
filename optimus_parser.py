@@ -159,4 +159,3 @@ subject to x + y == 1
     """
     objective_function, constraints, variables = parse_optimization_model(d.strip())
     import pdb; pdb.set_trace()
-
