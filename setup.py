@@ -48,6 +48,7 @@ if __name__ == '__main__':
         install_requires=[
             "flask",
             "flask-jwt-extended",
-            "sqreen"
+            "sqreen",
+            "flask_wtf"
         ]
     )
