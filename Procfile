@@ -1,1 +1,1 @@
-web: python optimus-webapp.py
+web: FLASK_RUN_PORT=$PORT flask run
