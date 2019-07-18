@@ -1,12 +1,3 @@
-<!--
-  <form action="" method="post" novalidate>
-    <p>
-        {{ form.data_input().equation.label }}<br>
-        {{ form.data_input().equation(size=32) }}
-    </p>
-    <a href="/compute">Compute</a>
-</form>
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +8,7 @@
   <link rel="stylesheet" type="text/css" href="./static/css/colors.css">
   <link rel="stylesheet" type="text/css" href="./static/css/modal.css">
   <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
   <link rel="icon" type="image/png" href="./static/img/se.png">
   <meta name="author" value="vanGato">
@@ -33,9 +25,10 @@
       </ul> -->
       <br>
       <div class="index__search">
-        <form action="serp.htm" methode="GET">
-          <textarea class="outer" id="programming_box"></textarea>
+        <form action="submit_program" onsubmit="submit_program(); return false">
+          <textarea name="program" class="outer" id="programming_box"></textarea>
           <br>
+          <div id="results"></div>
           <center>
             <button class="btn" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
               Compile
@@ -85,6 +78,13 @@
     }
 </style>
 <script>
+function submit_program(){
+  $.ajax({url: "/submit_program", success: function(result){
+    $("#results").html(result["results_block"]);
+  }});
+}
+
+
   var editor = CodeMirror.fromTextArea(document.getElementById("programming_box"), {
     viewportMargin: Infinity,
     lineNumbers: true
