@@ -11,15 +11,38 @@ import networkx as nx
 def get_networkx_plot_of_qubo(qubo, old_qubo):
 	plt.title("Quadratic Interaction Graph")
 	g = nx.Graph()
-	for e,v in dict(qubo.quadratic).items():
+	for e,v in dict(old_qubo.quadratic).items():
 		g.add_edge(e[0], e[1], weight=float(v))
-		print("edge", e)
+
+	if qubo:
+		g2 = nx.Graph()
+		for e,v in dict(qubo.quadratic).items():
+			g2.add_edge(e[0], e[1], weight=float(v))
 
 	pos = nx.spring_layout(g, seed=1)
+
+	if qubo:
+		nx.draw_networkx_edges(
+		    g, pos, edgelist=list(g2.edges), width=8, alpha=0.5, edge_color="#ff3300"
+		)
+
+		nx.draw_networkx_nodes(g, pos, nodelist=list(g2.nodes), node_size=500, node_color="#ff3300")
+
 	nx.draw_networkx_nodes(g, pos, node_color="#3D9CD9")
 	nx.draw_networkx_edges(g, pos, width=2, edge_color="#3D9CD9")
-
 	nx.draw_networkx_labels(g, pos, font_size=16)
+
+	weights = [g[u][v]['weight'] for u,v in g.edges()]
+
+	print("weights", weights)
+
+	edge_labels=dict([((u,v,),d['weight'])
+	             for u,v,d in g.edges(data=True)])
+	nx.draw_networkx_edge_labels(g,pos,edge_labels=edge_labels)
+
+	l, r = plt.xlim()
+	plt.xlim(l - 0.35, r + 0.35)
+	plt.axis("off")
 
 	plt.savefig("temp.png", format="PNG")
 

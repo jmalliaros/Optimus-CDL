@@ -81,5 +81,9 @@ def run_dwave(H, sampler = dwaveSampler, solve_parameters=None):
 
     results = quantumSample.sample_qubo(qubo,annealing_time=20,num_reads=1000)
 
-    new_qubo = quantumSample.new_qubo
-    return results, new_qubo, qubo
+    try:
+        new_qubo = quantumSample.new_qubo
+    except AttributeError:
+        new_qubo = None
+
+    return results, new_qubo, model.to_dimod_bqm()
