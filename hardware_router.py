@@ -35,6 +35,13 @@ def route(input_string):
 
 	# print("objective_function", objective_function)
 	# H = eval(objective_function)
+	if "ibm" in variables:
+		del variables["ibm"]
+	if "dwave" in variables:
+		del variables["dwave"]
+	if "rigetti" in variables:
+		del variables["rigetti"]
+
 
 	try:
 		run_on = solve_parameters["run_on"]

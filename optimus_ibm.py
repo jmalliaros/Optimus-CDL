@@ -22,10 +22,10 @@ from pyqubo import Binary
 
 def get_ising_opt_qubitops(model, variables):
 
-    num_variables = len(variables)
-    var_to_int = dict(zip(variables, range(num_variables)))
+    num_variables = len(list(model.linear))
+    var_to_int = dict(zip(list(model.linear), range(num_variables)))
 
-    linear, quadratic, offset = model.to_ising()
+    linear, quadratic, offset = model.to_ising()    
 
     pauli_list = []
     xs = np.zeros(num_variables, dtype=np.bool)
@@ -44,7 +44,7 @@ def get_ising_opt_qubitops(model, variables):
 
 def run_IBM(H=None, backend = None, num_samples=100,qaoa_steps=20, variables=None):
 
-    num_vars = len(variables)
+    num_vars = len(list(H.linear))
 
     qubit_op, offset = get_ising_opt_qubitops(H,variables)
 

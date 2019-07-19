@@ -39,6 +39,7 @@ def ising_qaoa(model, variables, steps=1, rand_seed=None, connection=None, sampl
     :param vqe_option: (Optional. Default=None). VQE optional arguments.  If None set to
         ``vqe_option = {'disp': print_fun, 'return_all': True, 'samples': samples}``
     """
+    variables = set(sum(list(model.quadratic), ()) + tuple(model.linear))
     num_variables = len(variables)
     var_to_int = dict(zip(variables, range(num_variables)))
 
