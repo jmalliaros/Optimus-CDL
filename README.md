@@ -1,4 +1,4 @@
-# CDL-Hackathon
+# Optimus - Creative Destruction Labs Quantum Hackathon
 
 A novel interactive console for quantum optimization.
 
