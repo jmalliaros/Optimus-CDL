@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/3848298/61548833-965d1680-aa1c-11e9-876e-a7335ec3a530.png"/>
+
 # Optimus - Creative Destruction Labs Quantum Hackathon
 
 A novel interactive console for quantum optimization.
