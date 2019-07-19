@@ -1,12 +1,14 @@
 import dimod
 import minorminer
-from dwave.system import DWaveSampler, FixedEmbeddingComposite
+from dwave.system import DWaveSampler
+from dwave.system.composites import AutoEmbeddingComposite, FixedEmbeddingComposite
 from pyqubo import Binary
 import matplotlib.pyplot as plt
 import sys
 
 dwaveSampler = DWaveSampler()
 dimodSampler = dimod.ExactSolver()
+
 
 ## EXAMPLE Problem -> Replace with general form
 binArr = []
@@ -49,7 +51,10 @@ def get_embedding_with_short_chain(J: dict, tries: int = 5,
         raise Exception("Cannot find embedding")
     return embedding
 
-def run_dwave(H, sampler = dwaveSampler):
+from XanaduCutOffComposite import CutOffComposite
+from XanaduCutOffComposite import XanaduCutOffComposite
+
+def run_dwave(H, sampler = dwaveSampler, solve_parameters=None):
     '''Runs QUBO from a given H, on the spesified sampler.
 
     :param H: Hamiltoninan
@@ -59,14 +64,26 @@ def run_dwave(H, sampler = dwaveSampler):
     '''
     model = H.compile()
     qubo,offset = model.to_qubo()
+    print("solve_parameters", solve_parameters)
+    if "prune" in solve_parameters:
+        pruner = solve_parameters["prune"]
+        print(str(pruner), "dsandaskjdasn")
+        if "dwave" in str(pruner):
+            print("WORKINGdwavedsakmadksm")
+            quantumSample = CutOffComposite(AutoEmbeddingComposite(sampler), 0.75)
 
-    embedding = get_embedding_with_short_chain(J=qubo, processor=dwaveSampler.edgelist)
+        if "xanadu" in str(pruner):
+            print("Xanadu!!!!!!!!!!!")
+            quantumSample = XanaduCutOffComposite(AutoEmbeddingComposite(sampler), 0.75)
+    else:
+        embedding = get_embedding_with_short_chain(J=qubo, processor=dwaveSampler.edgelist)
+        quantumSample = FixedEmbeddingComposite(sampler, embedding)
 
-    quantumSample = FixedEmbeddingComposite(sampler, embedding)
     results = quantumSample.sample_qubo(qubo,annealing_time=20,num_reads=1000)
-    return results
 
-res = run_dwave(H)
+    try:
+        new_qubo = quantumSample.new_qubo
+    except AttributeError:
+        new_qubo = None
 
-for i,(smpl, energy) in enumerate(res.data(['sample','energy'])):
-    print(smpl, energy)
+    return results, new_qubo, model.to_dimod_bqm()

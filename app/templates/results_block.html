@@ -1,0 +1,43 @@
+<div style="-webkit-filter: drop-shadow(5px 5px 5px gray); filter: drop-shadow(5px 5px 5px gray); border: 0px solid black; background-color: white; padding: 5px">
+<span style="color:gray; font-size: 12px"><i class="fa fa-chevron-right"></i> RESULTS</span>
+
+{% if e %}
+<br>
+There's an error in your Optimus syntax. Please re-examine your input and try again.
+<br>
+<br>
+<code style="font-size:9px">
+{{e}}
+</code>
+{% else %}
+<div class="container">
+	<div class="row">
+		<div class="row">
+            <div onclick="changeImage(this)" class="clickable col-lg-6 col-md-4 col-xs-6 thumb">
+                <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title=""
+                   data-target="#image-gallery">
+                    <img class="img-thumbnail"
+                         src="data:image/png;base64,{{ result }}"
+                         alt="Another alt text">
+                </a>
+            </div>
+            <div onclick="changeImage(this)" class="clickable col-lg-6 col-md-4 col-xs-6 thumb">
+                <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title=""
+                   data-target="#image-gallery">
+                    <img class="img-thumbnail"
+                    	 src="data:image/png;base64,{{ image_2 }}"
+                         alt="Another alt text">
+                </a>
+            </div>
+
+        </div>
+	</div>
+</div>
+
+
+<script>
+</script>
+
+{% endif %}
+</div>
+<br>
