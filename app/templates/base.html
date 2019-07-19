@@ -13,6 +13,51 @@
   <link rel="stylesheet" type="text/css" href="./static/css/colors.css">
   <link rel="stylesheet" type="text/css" href="./static/css/modal.css">
   <link rel="stylesheet" type="text/css" href="./static/css/index.css">
+<script>
+examples = [];
+
+examples.push(`
+// A basic binary linear program problem.
+min x*y + 2*x
+
+// Add linear programming constraints
+subject to x+y+z==1
+subject to x-z==1 
+`)
+
+examples.push(`
+// A more advanced linear program ran on D-Wave
+min 2*x*y+ 6*x + z*x + y*z
+subject to x+y==1
+subject to x==1
+run on dwave
+`)
+
+examples.push(`
+// Que automatically handles higher order
+// interactions. Ancilla qubit(s) will be added 
+// to the QUBO formulation as needed.
+min x*y*z
+subject to x+y==1
+subject to x==1
+`)
+
+examples.push(`
+min 3*x*y + x*z + 4*z*y
+subject to x+y+z==1
+subject to x-z==1
+solve prune xanadu
+`)
+
+examples.push(`
+min 3*x*y + x*z + 4*z*y
+subject to x+y+z==1
+subject to x-z==1
+solve prune dwave
+run on dwave, ibm, rigetti
+`)
+
+</script>
 </head>
 <body>
   <br>
@@ -37,7 +82,7 @@
               Compile
               <div class="index__ico"></div>
             </button>
-            <button class="btn btn-light" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
+            <button type="button" onclick="feeling_lucky()" class="btn btn-light" style="padding:10px; font-size:20px">
               I'm feeling lucky
               <div class="index__ico"></div>
             </button>
@@ -87,7 +132,7 @@
 </style>
 <script>
 
-  var editor = CodeMirror.fromTextArea(document.getElementById("programming_box"), {
+  editor = CodeMirror.fromTextArea(document.getElementById("programming_box"), {
     viewportMargin: Infinity,
     lineNumbers: true
   });
@@ -124,10 +169,69 @@
     </div>
 </div>
 
+<div id="examples_holder" style="bottom: 0px; position: fixed">
+</div>
+
 <script>
+function choose(choices) {
+  var index = Math.floor(Math.random() * choices.length);
+  return choices[index];
+}
+
+
+function feeling_lucky(){
+  exp = choose(examples);
+  type_in(exp, 0);
+}
+
+
+function insertTextAtCursor(data){
+    var cm = $('.CodeMirror')[0].CodeMirror;
+    var doc = cm.getDoc();
+    var cursor = doc.getCursor(); // gets the line number in the cursor position
+    var line = doc.getLine(cursor.line); // get the line contents
+    var pos = { // create a new object to avoid mutation of the original selection
+        line: cursor.line,
+        ch: line.length - 1 // set the character position to the end of the line
+    }
+    doc.replaceSelection(data, pos); // adds a new line
+}
+
 function changeImage(t){
   $("#image-gallery-image").attr("src", $(t).find(".img-thumbnail").attr("src"));
 }
+
+function type_in(paragraph, index){
+  // var cm = $('.CodeMirror')[0].CodeMirror;
+  // var doc = cm.getDoc();
+  // doc.replaceRange('', 0);
+  if (index == 0){
+    var cm = $('.CodeMirror')[0].CodeMirror;
+    cm.setValue("");
+    editor.display.input.focus()
+  }
+
+  string_to_array = function (str) {
+       return str.trim().split(" ");
+  };
+  fdd = string_to_array(paragraph);
+  if (index==fdd.length) return;
+  fdd.reverse();
+  window.setTimeout(function(){
+    insertTextAtCursor(fdd[index] + " ");
+    type_in(paragraph, index +1);
+  }, 200);
+}
+
+
+html_for_examples_holder = ""
+for (var i = 0; i < examples.length; i++) {
+  html_for_examples_holder = html_for_examples_holder + '<a onclick="type_in(examples[' + i+ '], 0)" href="#">Example '+ (i+1)+ ' </a>'
+}
+$("#examples_holder").html(html_for_examples_holder);
+
+
+
 </script>
 
 

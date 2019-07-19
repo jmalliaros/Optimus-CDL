@@ -46,13 +46,13 @@ def route(input_string):
 
 	res, qubo, old_qubo = run_dwave(H, solve_parameters=solve_parameters)
 	if "dwave" not in run_on:
-		res, qubo, old_qubo = None, None, None
+		res = None
 
 	qubo_to_use = old_qubo
 	print("res, qubo, old_qubo", res, qubo, old_qubo)	
 
-	# if qubo:
-	# 	qubo_to_use = qubo
+	if qubo:
+		qubo_to_use = qubo
 
 	if "ibm" in run_on:
 		res_ibm = run_IBM(qubo_to_use, variables=variables.keys())
@@ -60,13 +60,13 @@ def route(input_string):
 		res_ibm = None
 
 	if "rigetti" in run_on:
-		res_rig = run_Rigetti(qubo_to_use)
+		res_rig = run_Rigetti(qubo_to_use, variables=variables.keys())
 	else:
 		res_rig = None
 
 
 	shots = []
-	for i,(smpl, energy) in enumerate(res.data(['sample','energy'])):
-	    shots.append([smpl, energy])
+	# for i,(smpl, energy) in enumerate(res.data(['sample','energy'])):
+	#     shots.append([smpl, energy])
 
 	return res, shots, qubo, old_qubo, res_ibm, res_rig

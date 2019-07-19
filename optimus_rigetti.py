@@ -9,14 +9,14 @@ from grove.pyqaoa.qaoa import QAOA
 from pyqubo import Binary
 
 # EXAMPLE Problem -> Replace with general form
-binArr = []
-variable = []
-index = 0
-for i in range(0,5):
-    binArr.append(Binary('s'+str(i+1)))
-    variable.append('s' + str(i+1))
-s1,s2,s3,s4,s5 = binArr[0], binArr[1], binArr[2], binArr[3], binArr[4]
-H = (s1+2*s2+3*s3+4*s4+5*s5-3*3)**2 + (s1+s2+s3+s4+s5-3)**2
+# binArr = []
+# variable = []
+# index = 0
+# for i in range(0,5):
+#     binArr.append(Binary('s'+str(i+1)))
+#     variable.append('s' + str(i+1))
+# s1,s2,s3,s4,s5 = binArr[0], binArr[1], binArr[2], binArr[3], binArr[4]
+# H = (s1+2*s2+3*s3+4*s4+5*s5-3*3)**2 + (s1+s2+s3+s4+s5-3)**2
 
 
 def ising_qaoa(model, variables, steps=1, rand_seed=None, connection=None, samples=None,
@@ -80,8 +80,7 @@ def ising_qaoa(model, variables, steps=1, rand_seed=None, connection=None, sampl
     return ising_inst
 
 
-def run_Rigetti(H=H, connection=None, num_samples=100, qaoa_steps=1):
-    variables = variable  # We need to get something like H.variables()
+def run_Rigetti(H=None, connection=None, num_samples=100, qaoa_steps=1, variables=None):
     inst = ising_qaoa(H, variables, connection=connection, steps=qaoa_steps)
 
     betas, gammas = inst.get_angles()

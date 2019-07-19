@@ -30,7 +30,8 @@ def plot_this(result):
 	p = p + geom_bar(stat='identity',width=0.5, show_legend=False)
 	p = p + geom_text(position = position_stack(vjust=0.5),size=10)
 	# p = p + scale_fill_manual(values = custom_cols)
-	p = p + labs(x = 'Solution', y = 'Relative frequency', title="Frequency of the different solutions")
+	p = p + labs(x = 'Solution', y = 'Relative frequency', title="IBM: Frequency of the different solutions")
+	p = p + theme(axis_text_x=element_text(rotation=45, hjust=1))
 	p.draw()
 
 	plt.savefig("temp.png", format="PNG")

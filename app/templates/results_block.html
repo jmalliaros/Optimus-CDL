@@ -3,7 +3,7 @@
 
 {% if e %}
 <br>
-There's an error in your Optimus syntax. Please re-examine your input and try again.
+There's an error in your Que syntax. Please re-examine your input and try again.
 <br>
 <br>
 <code style="font-size:9px">
@@ -43,7 +43,16 @@ There's an error in your Optimus syntax. Please re-examine your input and try ag
                 </a>
             </div>
             {% endif %}
-
+            {% if rig_base64 %}
+            <div onclick="changeImage(this)" class="clickable col-lg-6 col-md-4 col-xs-6 thumb">
+                <a class="thumbnail" href="#" data-image-id="" data-toggle="modal" data-title=""
+                   data-target="#image-gallery">
+                    <img class="img-thumbnail"
+                    	 src="data:image/png;base64,{{ rig_base64 }}"
+                         alt="Another alt text">
+                </a>
+            </div>
+            {% endif %}
         </div>
 	</div>
 </div>

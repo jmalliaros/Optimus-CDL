@@ -4,7 +4,7 @@ from sympy import *
 tokens = (
     'NAME','NUMBER',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
-    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO', 'EQUALITYTOKEN', 'SOLVE', 'RUN_ON'
+    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO', 'EQUALITYTOKEN', 'SOLVE', 'RUN_ON', 'COMMENT'
     )
 
 # Tokens for simple symbols
@@ -18,6 +18,10 @@ t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
 t_COMMA = r'\,'
+
+def t_COMMENT(t):
+    r'//.*'
+    t.lexer.skip(1)
 
 def t_SUBJECT_TO(t):
 	r'(subject\ to|st)'
@@ -163,12 +167,15 @@ def p_expression_name(t):
     try:
         t[0] = names[t[1]]
     except LookupError:
-        print("Symbol not found -- autogenerating")
+        print("Symbol not found -- autogenerating", t[1])
         names[t[1]] = Binary(t[1])
-        t[0] = Binary(t[1])
+        t[0] = names[t[1]]
 
 def p_error(t):
-    print("Syntax error at '%s'" % t.value)
+    if t is None:
+        pass
+    else:
+        print("Syntax error at '%s'" % t.value)
 
 def parse_optimization_model(user_string, compiler_type="actual"):
     formulation = None
@@ -185,6 +192,7 @@ def parse_optimization_model(user_string, compiler_type="actual"):
                 constraints.append(t.split(" ")[2:])
 
         return formulation, constraints
+
     if compiler_type == "actual":
         import ply.yacc as yacc
         parser = yacc.yacc()

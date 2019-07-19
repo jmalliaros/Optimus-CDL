@@ -1,3 +1,8 @@
+import matplotlib
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
+
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jul 19 03:40:03 2019
@@ -26,11 +31,14 @@ def plot_this_rigetti(result):
     p = ggplot(df_rigetti,aes(x='sol', y='rel_occ', fill='solnum',label='num_occurrences')) 
     p = p + geom_bar(stat='identity',width=0.5, show_legend=False)
     p = p + geom_text(position = position_stack(vjust=0.5),size=10)
-    p = p + scale_fill_manual(values = custom_cols)
-    p = p + labs(x = 'Solution', y = 'Relative frequency', title="Frequency of the different solutions")
+    # p = p + scale_fill_manual(values = custom_cols)
+    p = p + labs(x = 'Solution', y = 'Relative frequency', title="Rigetti: Frequency of the different solutions")
+    p = p + theme(axis_text_x=element_text(rotation=45, hjust=1))
     p.draw()
 
     plt.savefig("temp.png", format="PNG")
+
+    import base64
 
     with open("temp.png", "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
