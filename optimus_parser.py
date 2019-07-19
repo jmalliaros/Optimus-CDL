@@ -1,9 +1,10 @@
+from pyqubo import Binary, Num
 from sympy import *
 
 tokens = (
     'NAME','NUMBER',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
-    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO', 'EQUALITYTOKEN'
+    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO', 'EQUALITYTOKEN', 'SOLVE'
     )
 
 # Tokens for simple symbols
@@ -19,8 +20,12 @@ t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
 t_COMMA = r'\,'
 
 def t_SUBJECT_TO(t):
-	r'subject\ to'
+	r'(\bsubject\ to\b|\bst\b)'
 	return t
+
+def t_SOLVE(t):
+    r'\bsolve\b'
+    return t
 
 def t_EQUALITYTOKEN(t):
     r'=='
@@ -65,8 +70,20 @@ precedence = (
 # dictionary of variable names
 names = { }
 
+solve_parameters = {}
+
 # dictionary of optimization formulations
 optimization_formulations = []
+
+def refresh_globals():
+    global names, optimization_formulations, solve_parameters
+    # dictionary of variable names
+    names = { }
+
+    solve_parameters = {}
+
+    # dictionary of optimization formulations
+    optimization_formulations = []    
 
 def p_statement_assign(t):
     'statement : NAME EQUALS expression'
@@ -102,6 +119,15 @@ def p_statement_subject_to(t):
     'statement : SUBJECT_TO expression EQUALITYTOKEN expression'
     optimization_formulations[-1]["constraints"].append(t)
 
+def p_statement_solve(t):
+    '''statement : SOLVE NAME NAME
+    '''
+    if len(t) == 4:
+        solve_parameters[t[2]] = t[3]
+    elif len(t) == 5:
+        solve_parameters[t[2]] = [t[3], t[4]]
+
+
 def p_expression_group(t):
     'expression : LPAREN expression RPAREN'
     t[0] = t[2]
@@ -116,8 +142,8 @@ def p_expression_name(t):
         t[0] = names[t[1]]
     except LookupError:
         print("Symbol not found -- autogenerating")
-        names[t[1]] = symbols(t[1])
-        t[0] = symbols(t[1])
+        names[t[1]] = Binary(t[1])
+        t[0] = Binary(t[1])
 
 def p_error(t):
     print("Syntax error at '%s'" % t.value)
@@ -150,12 +176,13 @@ def parse_optimization_model(user_string, compiler_type="actual"):
     for i in range(len(optimization_formulations[0]["constraints"])):
         constraints.append([optimization_formulations[0]["constraints"][i][2], optimization_formulations[0]["constraints"][i][3], optimization_formulations[0]["constraints"][i][4]])
 
-    return objective_function, constraints, variables
+    return objective_function, constraints, variables, solve_parameters
 
 if __name__ == "__main__":
     d = """
 min 5*x + 8*y
 subject to x + y == 1
+solve prune dwave
     """
-    objective_function, constraints, variables = parse_optimization_model(d.strip())
+    objective_function, constraints, variables, solve_parameters = parse_optimization_model(d.strip())
     import pdb; pdb.set_trace()

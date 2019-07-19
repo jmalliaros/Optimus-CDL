@@ -14,9 +14,10 @@ Rule 8     statement -> MIN expression
 Rule 9     statement -> MIN expression COMMA expression
 Rule 10    statement -> MIN expression COMMA expression COMMA expression
 Rule 11    statement -> SUBJECT_TO expression EQUALITYTOKEN expression
-Rule 12    expression -> LPAREN expression RPAREN
-Rule 13    expression -> NUMBER
-Rule 14    expression -> NAME
+Rule 12    statement -> SOLVE NAME NAME
+Rule 13    expression -> LPAREN expression RPAREN
+Rule 14    expression -> NUMBER
+Rule 15    expression -> NAME
 
 Terminals, with rules where they appear
 
@@ -24,20 +25,21 @@ COMMA                : 9 10 10
 DIVIDE               : 6
 EQUALITYTOKEN        : 11
 EQUALS               : 1
-LPAREN               : 12
+LPAREN               : 13
 MIN                  : 8 9 10
 MINUS                : 4 7
-NAME                 : 1 14
-NUMBER               : 13
+NAME                 : 1 12 12 15
+NUMBER               : 14
 PLUS                 : 3
-RPAREN               : 12
+RPAREN               : 13
+SOLVE                : 12
 SUBJECT_TO           : 11
 TIMES                : 5
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 1 2 3 3 4 4 5 5 6 6 7 8 9 9 10 10 10 11 11 12
+expression           : 1 2 3 3 4 4 5 5 6 6 7 8 9 9 10 10 10 11 11 13
 statement            : 0
 
 Parsing method: LALR
@@ -51,21 +53,23 @@ state 0
     (9) statement -> . MIN expression COMMA expression
     (10) statement -> . MIN expression COMMA expression COMMA expression
     (11) statement -> . SUBJECT_TO expression EQUALITYTOKEN expression
+    (12) statement -> . SOLVE NAME NAME
     (3) expression -> . expression PLUS expression
     (4) expression -> . expression MINUS expression
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
     NAME            shift and go to state 2
     MIN             shift and go to state 4
     SUBJECT_TO      shift and go to state 5
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
+    SOLVE           shift and go to state 6
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
 
     statement                      shift and go to state 1
     expression                     shift and go to state 3
@@ -79,14 +83,14 @@ state 1
 state 2
 
     (1) statement -> NAME . EQUALS expression
-    (14) expression -> NAME .
+    (15) expression -> NAME .
 
-    EQUALS          shift and go to state 9
-    PLUS            reduce using rule 14 (expression -> NAME .)
-    MINUS           reduce using rule 14 (expression -> NAME .)
-    TIMES           reduce using rule 14 (expression -> NAME .)
-    DIVIDE          reduce using rule 14 (expression -> NAME .)
-    $end            reduce using rule 14 (expression -> NAME .)
+    EQUALS          shift and go to state 10
+    PLUS            reduce using rule 15 (expression -> NAME .)
+    MINUS           reduce using rule 15 (expression -> NAME .)
+    TIMES           reduce using rule 15 (expression -> NAME .)
+    DIVIDE          reduce using rule 15 (expression -> NAME .)
+    $end            reduce using rule 15 (expression -> NAME .)
 
 
 state 3
@@ -98,10 +102,10 @@ state 3
     (6) expression -> expression . DIVIDE expression
 
     $end            reduce using rule 2 (statement -> expression .)
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
 
 state 4
@@ -114,16 +118,16 @@ state 4
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 14
+    expression                     shift and go to state 15
 
 state 5
 
@@ -133,18 +137,25 @@ state 5
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 16
+    expression                     shift and go to state 17
 
 state 6
+
+    (12) statement -> SOLVE . NAME NAME
+
+    NAME            shift and go to state 18
+
+
+state 7
 
     (7) expression -> MINUS . expression
     (3) expression -> . expression PLUS expression
@@ -152,51 +163,51 @@ state 6
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 17
+    expression                     shift and go to state 19
 
-state 7
+state 8
 
-    (12) expression -> LPAREN . expression RPAREN
+    (13) expression -> LPAREN . expression RPAREN
     (3) expression -> . expression PLUS expression
     (4) expression -> . expression MINUS expression
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 18
-
-state 8
-
-    (13) expression -> NUMBER .
-
-    PLUS            reduce using rule 13 (expression -> NUMBER .)
-    MINUS           reduce using rule 13 (expression -> NUMBER .)
-    TIMES           reduce using rule 13 (expression -> NUMBER .)
-    DIVIDE          reduce using rule 13 (expression -> NUMBER .)
-    $end            reduce using rule 13 (expression -> NUMBER .)
-    COMMA           reduce using rule 13 (expression -> NUMBER .)
-    EQUALITYTOKEN   reduce using rule 13 (expression -> NUMBER .)
-    RPAREN          reduce using rule 13 (expression -> NUMBER .)
-
+    expression                     shift and go to state 20
 
 state 9
+
+    (14) expression -> NUMBER .
+
+    PLUS            reduce using rule 14 (expression -> NUMBER .)
+    MINUS           reduce using rule 14 (expression -> NUMBER .)
+    TIMES           reduce using rule 14 (expression -> NUMBER .)
+    DIVIDE          reduce using rule 14 (expression -> NUMBER .)
+    $end            reduce using rule 14 (expression -> NUMBER .)
+    COMMA           reduce using rule 14 (expression -> NUMBER .)
+    EQUALITYTOKEN   reduce using rule 14 (expression -> NUMBER .)
+    RPAREN          reduce using rule 14 (expression -> NUMBER .)
+
+
+state 10
 
     (1) statement -> NAME EQUALS . expression
     (3) expression -> . expression PLUS expression
@@ -204,18 +215,18 @@ state 9
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 19
+    expression                     shift and go to state 21
 
-state 10
+state 11
 
     (3) expression -> expression PLUS . expression
     (3) expression -> . expression PLUS expression
@@ -223,18 +234,18 @@ state 10
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 20
+    expression                     shift and go to state 22
 
-state 11
+state 12
 
     (4) expression -> expression MINUS . expression
     (3) expression -> . expression PLUS expression
@@ -242,18 +253,18 @@ state 11
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 21
+    expression                     shift and go to state 23
 
-state 12
+state 13
 
     (5) expression -> expression TIMES . expression
     (3) expression -> . expression PLUS expression
@@ -261,18 +272,18 @@ state 12
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 22
+    expression                     shift and go to state 24
 
-state 13
+state 14
 
     (6) expression -> expression DIVIDE . expression
     (3) expression -> . expression PLUS expression
@@ -280,18 +291,18 @@ state 13
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 23
+    expression                     shift and go to state 25
 
-state 14
+state 15
 
     (8) statement -> MIN expression .
     (9) statement -> MIN expression . COMMA expression
@@ -302,28 +313,28 @@ state 14
     (6) expression -> expression . DIVIDE expression
 
     $end            reduce using rule 8 (statement -> MIN expression .)
-    COMMA           shift and go to state 24
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
-
-
-state 15
-
-    (14) expression -> NAME .
-
-    COMMA           reduce using rule 14 (expression -> NAME .)
-    PLUS            reduce using rule 14 (expression -> NAME .)
-    MINUS           reduce using rule 14 (expression -> NAME .)
-    TIMES           reduce using rule 14 (expression -> NAME .)
-    DIVIDE          reduce using rule 14 (expression -> NAME .)
-    $end            reduce using rule 14 (expression -> NAME .)
-    EQUALITYTOKEN   reduce using rule 14 (expression -> NAME .)
-    RPAREN          reduce using rule 14 (expression -> NAME .)
+    COMMA           shift and go to state 26
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
 
 state 16
+
+    (15) expression -> NAME .
+
+    COMMA           reduce using rule 15 (expression -> NAME .)
+    PLUS            reduce using rule 15 (expression -> NAME .)
+    MINUS           reduce using rule 15 (expression -> NAME .)
+    TIMES           reduce using rule 15 (expression -> NAME .)
+    DIVIDE          reduce using rule 15 (expression -> NAME .)
+    $end            reduce using rule 15 (expression -> NAME .)
+    EQUALITYTOKEN   reduce using rule 15 (expression -> NAME .)
+    RPAREN          reduce using rule 15 (expression -> NAME .)
+
+
+state 17
 
     (11) statement -> SUBJECT_TO expression . EQUALITYTOKEN expression
     (3) expression -> expression . PLUS expression
@@ -331,14 +342,21 @@ state 16
     (5) expression -> expression . TIMES expression
     (6) expression -> expression . DIVIDE expression
 
-    EQUALITYTOKEN   shift and go to state 25
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    EQUALITYTOKEN   shift and go to state 27
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
 
-state 17
+state 18
+
+    (12) statement -> SOLVE NAME . NAME
+
+    NAME            shift and go to state 28
+
+
+state 19
 
     (7) expression -> MINUS expression .
     (3) expression -> expression . PLUS expression
@@ -355,28 +373,28 @@ state 17
     EQUALITYTOKEN   reduce using rule 7 (expression -> MINUS expression .)
     RPAREN          reduce using rule 7 (expression -> MINUS expression .)
 
-  ! PLUS            [ shift and go to state 10 ]
-  ! MINUS           [ shift and go to state 11 ]
-  ! TIMES           [ shift and go to state 12 ]
-  ! DIVIDE          [ shift and go to state 13 ]
+  ! PLUS            [ shift and go to state 11 ]
+  ! MINUS           [ shift and go to state 12 ]
+  ! TIMES           [ shift and go to state 13 ]
+  ! DIVIDE          [ shift and go to state 14 ]
 
 
-state 18
+state 20
 
-    (12) expression -> LPAREN expression . RPAREN
+    (13) expression -> LPAREN expression . RPAREN
     (3) expression -> expression . PLUS expression
     (4) expression -> expression . MINUS expression
     (5) expression -> expression . TIMES expression
     (6) expression -> expression . DIVIDE expression
 
-    RPAREN          shift and go to state 26
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    RPAREN          shift and go to state 29
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
 
-state 19
+state 21
 
     (1) statement -> NAME EQUALS expression .
     (3) expression -> expression . PLUS expression
@@ -385,13 +403,13 @@ state 19
     (6) expression -> expression . DIVIDE expression
 
     $end            reduce using rule 1 (statement -> NAME EQUALS expression .)
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
 
-state 20
+state 22
 
     (3) expression -> expression PLUS expression .
     (3) expression -> expression . PLUS expression
@@ -405,16 +423,16 @@ state 20
     COMMA           reduce using rule 3 (expression -> expression PLUS expression .)
     EQUALITYTOKEN   reduce using rule 3 (expression -> expression PLUS expression .)
     RPAREN          reduce using rule 3 (expression -> expression PLUS expression .)
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
   ! TIMES           [ reduce using rule 3 (expression -> expression PLUS expression .) ]
   ! DIVIDE          [ reduce using rule 3 (expression -> expression PLUS expression .) ]
-  ! PLUS            [ shift and go to state 10 ]
-  ! MINUS           [ shift and go to state 11 ]
+  ! PLUS            [ shift and go to state 11 ]
+  ! MINUS           [ shift and go to state 12 ]
 
 
-state 21
+state 23
 
     (4) expression -> expression MINUS expression .
     (3) expression -> expression . PLUS expression
@@ -428,16 +446,16 @@ state 21
     COMMA           reduce using rule 4 (expression -> expression MINUS expression .)
     EQUALITYTOKEN   reduce using rule 4 (expression -> expression MINUS expression .)
     RPAREN          reduce using rule 4 (expression -> expression MINUS expression .)
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
   ! TIMES           [ reduce using rule 4 (expression -> expression MINUS expression .) ]
   ! DIVIDE          [ reduce using rule 4 (expression -> expression MINUS expression .) ]
-  ! PLUS            [ shift and go to state 10 ]
-  ! MINUS           [ shift and go to state 11 ]
+  ! PLUS            [ shift and go to state 11 ]
+  ! MINUS           [ shift and go to state 12 ]
 
 
-state 22
+state 24
 
     (5) expression -> expression TIMES expression .
     (3) expression -> expression . PLUS expression
@@ -454,13 +472,13 @@ state 22
     EQUALITYTOKEN   reduce using rule 5 (expression -> expression TIMES expression .)
     RPAREN          reduce using rule 5 (expression -> expression TIMES expression .)
 
-  ! PLUS            [ shift and go to state 10 ]
-  ! MINUS           [ shift and go to state 11 ]
-  ! TIMES           [ shift and go to state 12 ]
-  ! DIVIDE          [ shift and go to state 13 ]
+  ! PLUS            [ shift and go to state 11 ]
+  ! MINUS           [ shift and go to state 12 ]
+  ! TIMES           [ shift and go to state 13 ]
+  ! DIVIDE          [ shift and go to state 14 ]
 
 
-state 23
+state 25
 
     (6) expression -> expression DIVIDE expression .
     (3) expression -> expression . PLUS expression
@@ -477,13 +495,13 @@ state 23
     EQUALITYTOKEN   reduce using rule 6 (expression -> expression DIVIDE expression .)
     RPAREN          reduce using rule 6 (expression -> expression DIVIDE expression .)
 
-  ! PLUS            [ shift and go to state 10 ]
-  ! MINUS           [ shift and go to state 11 ]
-  ! TIMES           [ shift and go to state 12 ]
-  ! DIVIDE          [ shift and go to state 13 ]
+  ! PLUS            [ shift and go to state 11 ]
+  ! MINUS           [ shift and go to state 12 ]
+  ! TIMES           [ shift and go to state 13 ]
+  ! DIVIDE          [ shift and go to state 14 ]
 
 
-state 24
+state 26
 
     (9) statement -> MIN expression COMMA . expression
     (10) statement -> MIN expression COMMA . expression COMMA expression
@@ -492,18 +510,18 @@ state 24
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 27
+    expression                     shift and go to state 30
 
-state 25
+state 27
 
     (11) statement -> SUBJECT_TO expression EQUALITYTOKEN . expression
     (3) expression -> . expression PLUS expression
@@ -511,32 +529,39 @@ state 25
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 28
+    expression                     shift and go to state 31
 
-state 26
+state 28
 
-    (12) expression -> LPAREN expression RPAREN .
+    (12) statement -> SOLVE NAME NAME .
 
-    PLUS            reduce using rule 12 (expression -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 12 (expression -> LPAREN expression RPAREN .)
-    TIMES           reduce using rule 12 (expression -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 12 (expression -> LPAREN expression RPAREN .)
-    $end            reduce using rule 12 (expression -> LPAREN expression RPAREN .)
-    COMMA           reduce using rule 12 (expression -> LPAREN expression RPAREN .)
-    EQUALITYTOKEN   reduce using rule 12 (expression -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 12 (expression -> LPAREN expression RPAREN .)
+    $end            reduce using rule 12 (statement -> SOLVE NAME NAME .)
 
 
-state 27
+state 29
+
+    (13) expression -> LPAREN expression RPAREN .
+
+    PLUS            reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+    $end            reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+    COMMA           reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+    EQUALITYTOKEN   reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 13 (expression -> LPAREN expression RPAREN .)
+
+
+state 30
 
     (9) statement -> MIN expression COMMA expression .
     (10) statement -> MIN expression COMMA expression . COMMA expression
@@ -546,14 +571,14 @@ state 27
     (6) expression -> expression . DIVIDE expression
 
     $end            reduce using rule 9 (statement -> MIN expression COMMA expression .)
-    COMMA           shift and go to state 29
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    COMMA           shift and go to state 32
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
 
-state 28
+state 31
 
     (11) statement -> SUBJECT_TO expression EQUALITYTOKEN expression .
     (3) expression -> expression . PLUS expression
@@ -562,13 +587,13 @@ state 28
     (6) expression -> expression . DIVIDE expression
 
     $end            reduce using rule 11 (statement -> SUBJECT_TO expression EQUALITYTOKEN expression .)
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 
 
-state 29
+state 32
 
     (10) statement -> MIN expression COMMA expression COMMA . expression
     (3) expression -> . expression PLUS expression
@@ -576,18 +601,18 @@ state 29
     (5) expression -> . expression TIMES expression
     (6) expression -> . expression DIVIDE expression
     (7) expression -> . MINUS expression
-    (12) expression -> . LPAREN expression RPAREN
-    (13) expression -> . NUMBER
-    (14) expression -> . NAME
+    (13) expression -> . LPAREN expression RPAREN
+    (14) expression -> . NUMBER
+    (15) expression -> . NAME
 
-    MINUS           shift and go to state 6
-    LPAREN          shift and go to state 7
-    NUMBER          shift and go to state 8
-    NAME            shift and go to state 15
+    MINUS           shift and go to state 7
+    LPAREN          shift and go to state 8
+    NUMBER          shift and go to state 9
+    NAME            shift and go to state 16
 
-    expression                     shift and go to state 30
+    expression                     shift and go to state 33
 
-state 30
+state 33
 
     (10) statement -> MIN expression COMMA expression COMMA expression .
     (3) expression -> expression . PLUS expression
@@ -596,8 +621,8 @@ state 30
     (6) expression -> expression . DIVIDE expression
 
     $end            reduce using rule 10 (statement -> MIN expression COMMA expression COMMA expression .)
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
-    TIMES           shift and go to state 12
-    DIVIDE          shift and go to state 13
+    PLUS            shift and go to state 11
+    MINUS           shift and go to state 12
+    TIMES           shift and go to state 13
+    DIVIDE          shift and go to state 14
 

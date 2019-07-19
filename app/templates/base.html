@@ -5,15 +5,19 @@
   <title>START</title>
   <meta name="description" value="The search engine that doesn't track you. Learn More.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="./static/css/colors.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/modal.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" media="screen" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
   <link rel="icon" type="image/png" href="./static/img/se.png">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <meta name="author" value="vanGato">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="./static/css/colors.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/modal.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/index.css">
 </head>
 <body>
+  <br>
+  <br><br><br><br><br><br>
   <div class="index">
     <section class="index__header">
         <img width="400px" src="static/img/logo2.png"/>
@@ -30,11 +34,11 @@
           <br>
           <div id="results"></div>
           <center>
-            <button class="btn" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
+            <button class="btn btn-light" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
               Compile
               <div class="index__ico"></div>
             </button>
-            <button class="btn" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
+            <button class="btn btn-light" aria-label="Search" type="submit" style="padding:10px; font-size:20px">
               I'm feeling lucky
               <div class="index__ico"></div>
             </button>
@@ -61,6 +65,11 @@
   </div>
   <!-- /Modal -->
 </body>
+<div id="loading_box" style="display: none">
+  <center>
+    <img width="100px" src="static/img/loading.gif"/>
+  </center>
+</div>
 
 <!-- Create a simple CodeMirror instance -->
 <link rel="stylesheet" href="static/css/codemirror.css">
@@ -78,25 +87,49 @@
     }
 </style>
 <script>
-function submit_program(){
-  $.ajax({url: "/submit_program", success: function(result){
-    $("#results").html(result["results_block"]);
-  }});
-}
-
 
   var editor = CodeMirror.fromTextArea(document.getElementById("programming_box"), {
     viewportMargin: Infinity,
     lineNumbers: true
   });
 
+  function submit_program(){
+    $("#results").html($("#loading_box").html());
+    $.ajax({type : 'POST', url: "/submit_program", data:{"program_string": editor.getValue()}, success: function(result){
+      $("#results").html(result["results_block"]);
+    }});
+  }
+
   $(document).ready(function(){
     editor.display.input.focus()
   });
 </script>
 
+<br>
+<br>
 
+<div class="modal fade" id="image-gallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="image-gallery-title"></h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="image-gallery-image" class="img-responsive col-md-12" src="">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+function changeImage(t){
+  $("#image-gallery-image").attr("src", $(t).find(".img-thumbnail").attr("src"));
+}
+</script>
 
 
 </html>

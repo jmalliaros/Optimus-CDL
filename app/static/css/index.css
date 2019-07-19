@@ -19,9 +19,6 @@ body {
 }
 
 .index {
-  height: 100vh;
-  flex-wrap: nowrap;
-  flex-direction: column;
 }
 
 .index,
