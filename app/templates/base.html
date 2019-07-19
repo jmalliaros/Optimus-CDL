@@ -29,7 +29,7 @@ examples.push(`
 min 2*x*y+ 6*x + z*x + y*z
 subject to x+y==1
 subject to x==1
-run on rigetti
+run on rigetti, dwave
 `)
 
 examples.push(`
@@ -77,7 +77,7 @@ run on dwave, ibm, rigetti
   <div class="index">
     <section class="index__header">
         <img width="400px" src="static/img/logo2.png"/>
-        <span style="color:gray; font-family: Consolas, monaco, monospace;">[Interactive Console for Que Programming Language]</span>
+        <span style="color:gray; font-family: Consolas, monaco, monospace;">[Interactive Console]</span>
 <!--       <ul class="index__nav">
         <li class="index__active"><a>Web</a></li>
         <li><a href="serp.htm">Images</a></li>
@@ -239,7 +239,7 @@ function type_in(paragraph, index){
 
 html_for_examples_holder = ""
 for (var i = 0; i < examples.length; i++) {
-  html_for_examples_holder = html_for_examples_holder + '<a onclick="type_in(examples[' + i+ '], 0)" href="#">Example '+ (i+1)+ ' </a>'
+  html_for_examples_holder = html_for_examples_holder + '<a style="padding-left:10px; font-size: 10px" onclick="type_in(examples[' + i+ '], 0)" href="#"><i class="fa fa-chevron-right"></i>Example '+ (i+1)+ ' </a>'
 }
 $("#examples_holder").html(html_for_examples_holder);
 
