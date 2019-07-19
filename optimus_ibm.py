@@ -10,22 +10,22 @@ from qiskit.visualization import *
 from pyqubo import Binary
 
 ## EXAMPLE Problem -> Replace with general form
-binArr = []
-variable = []
-index = 0
-for i in range(0,2):
-    binArr.append(Binary('s'+str(i+1)))
-    variable.append('s' + str(i+1))
-print(variable)
-s1,s2 = binArr[0], binArr[1]
-H = (s1+s2-1)**2 + s1
+# binArr = []
+# variable = []
+# index = 0
+# for i in range(0,2):
+#     binArr.append(Binary('s'+str(i+1)))
+#     variable.append('s' + str(i+1))
+# print(variable)
+# s1,s2 = binArr[0], binArr[1]
+# H = (s1+s2-1)**2 + s1
 
 def get_ising_opt_qubitops(model, variables):
 
     num_variables = len(variables)
     var_to_int = dict(zip(variables, range(num_variables)))
 
-    linear, quadratic, offset = model.compile().to_ising()
+    linear, quadratic, offset = model.to_ising()
 
     pauli_list = []
     xs = np.zeros(num_variables, dtype=np.bool)
@@ -42,8 +42,7 @@ def get_ising_opt_qubitops(model, variables):
 
     return Operator(paulis=pauli_list), offset
 
-def run_IBM(H=H, backend = None, num_samples=100,qaoa_steps=20):
-    variables = variable
+def run_IBM(H=None, backend = None, num_samples=100,qaoa_steps=20, variables=None):
 
     num_vars = len(variables)
 
@@ -59,13 +58,10 @@ def run_IBM(H=H, backend = None, num_samples=100,qaoa_steps=20):
 
     circ = qaoa.get_optimal_circuit()
     q = circ.qregs[0]
-    c = ClassicalRegister(2, 'c')
+    c = ClassicalRegister(num_vars, 'c')
     circ.cregs.append(c)
     circ.measure(q,c)
 
     job=execute(circ,backend,shots=num_samples, memory=True)
 
     return job.result().get_counts(circ)
-
-result = run_IBM()
-print(result)

@@ -36,9 +36,34 @@ def route(input_string):
 	# print("objective_function", objective_function)
 	# H = eval(objective_function)
 
+	try:
+		run_on = solve_parameters["run_on"]
+		run_on = list(map(lambda a: a.label, run_on))
+	except KeyError:
+		run_on = ["dwave"]
+
+	print("run_on", run_on)
+
 	res, qubo, old_qubo = run_dwave(H, solve_parameters=solve_parameters)
-    res_ibm = run_IBM(H)
-    res_rig = run_Rigetti(H)
+	if "dwave" not in run_on:
+		res, qubo, old_qubo = None, None, None
+
+	qubo_to_use = old_qubo
+	print("res, qubo, old_qubo", res, qubo, old_qubo)	
+
+	# if qubo:
+	# 	qubo_to_use = qubo
+
+	if "ibm" in run_on:
+		res_ibm = run_IBM(qubo_to_use, variables=variables.keys())
+	else:
+		res_ibm = None
+
+	if "rigetti" in run_on:
+		res_rig = run_Rigetti(qubo_to_use)
+	else:
+		res_rig = None
+
 
 	shots = []
 	for i,(smpl, energy) in enumerate(res.data(['sample','energy'])):
