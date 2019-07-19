@@ -22,7 +22,6 @@ min x*y + 2*x
 
 // Add linear programming constraints
 subject to x+y+z==1
-subject to x-z==1 
 `)
 
 examples.push(`
@@ -30,7 +29,7 @@ examples.push(`
 min 2*x*y+ 6*x + z*x + y*z
 subject to x+y==1
 subject to x==1
-run on dwave
+run on rigetti
 `)
 
 examples.push(`
@@ -43,17 +42,30 @@ subject to x==1
 `)
 
 examples.push(`
-min 3*x*y + x*z + 4*z*y
-subject to x+y+z==1
-subject to x-z==1
-solve prune xanadu
+// Run the same example on multiple machines
+min x*y*z
+subject to x+y==1
+subject to x==1
+run on dwave, rigetti
 `)
 
 examples.push(`
+// Use a simple cut-off heuristic for
+// removing useless interactions
 min 3*x*y + x*z + 4*z*y
 subject to x+y+z==1
 subject to x-z==1
 solve prune dwave
+run on dwave, ibm, rigetti
+`)
+
+examples.push(`
+// Use Xanadu to find dense subgraphs 
+// for embedding
+min 3*x*y + x*z + 4*z*y
+subject to x+y+z==1
+subject to x-z==1
+solve prune xanadu
 run on dwave, ibm, rigetti
 `)
 

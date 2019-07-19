@@ -42,7 +42,7 @@ def get_ising_opt_qubitops(model, variables):
 
     return Operator(paulis=pauli_list), offset
 
-def run_IBM(H=None, backend = None, num_samples=100,qaoa_steps=20, variables=None):
+def run_IBM(H=None, backend = None, num_samples=100, qaoa_steps=3, variables=None):
 
     num_vars = len(list(H.linear))
 
@@ -52,7 +52,7 @@ def run_IBM(H=None, backend = None, num_samples=100,qaoa_steps=20, variables=Non
         backend = BasicAer.get_backend('qasm_simulator')
     quantum_instance = QuantumInstance(backend)
 
-    spsa = SPSA(max_trials=30)
+    spsa = SPSA(max_trials=10)
     qaoa = QAOA(qubit_op, spsa, qaoa_steps)
     result = qaoa.run(quantum_instance)
 
