@@ -1,6 +1,8 @@
 import matplotlib
 matplotlib.use("Agg")
 
+import matplotlib.pyplot as plt
+
 import numpy as np
 import pandas as pd
 from pandas.api.types import CategoricalDtype
@@ -9,6 +11,7 @@ import networkx as nx
 
 
 def get_networkx_plot_of_qubo(qubo, old_qubo):
+	plt.clf()
 	plt.title("Quadratic Interaction Graph")
 	g = nx.Graph()
 	for e,v in dict(old_qubo.quadratic).items():
@@ -34,8 +37,6 @@ def get_networkx_plot_of_qubo(qubo, old_qubo):
 
 	weights = [g[u][v]['weight'] for u,v in g.edges()]
 
-	print("weights", weights)
-
 	edge_labels=dict([((u,v,),d['weight'])
 	             for u,v,d in g.edges(data=True)])
 	nx.draw_networkx_edge_labels(g,pos,edge_labels=edge_labels)
@@ -53,6 +54,7 @@ def get_networkx_plot_of_qubo(qubo, old_qubo):
 	return encoded_string
 
 def get_dwave_plot(res):
+	plt.clf()
 	#Start with a result object SampleSet
 	df_raw = res.to_pandas_dataframe().sort_values(by='energy')
 	nrow, ncol = df_raw.shape
@@ -92,7 +94,7 @@ def get_dwave_plot(res):
 	    p = p + geom_segment(aes(x=1.30, y=0, xend=1.7, yend=0), arrow=arrow(angle = 60, length = 0.1,ends='both'),size=1.5)
 	    p = p + annotate("text", label = energy_diff, x=1.5, y = 0.05, size = 10)
 
-	p = p + labs(x = 'Energy', y = 'Relative frequency', title="Energy of the different solutions")
+	p = p + labs(x = 'Energy', y = 'Relative frequency', title="DWave: Energy of the different solutions")
 
 	p.save("temp.png")
 

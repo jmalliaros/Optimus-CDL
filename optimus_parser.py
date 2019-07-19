@@ -4,7 +4,7 @@ from sympy import *
 tokens = (
     'NAME','NUMBER',
     'PLUS','MINUS','TIMES','DIVIDE','EQUALS',
-    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO', 'EQUALITYTOKEN', 'SOLVE'
+    'LPAREN','RPAREN', 'MIN', 'COMMA', 'SUBJECT_TO', 'EQUALITYTOKEN', 'SOLVE', 'RUN_ON'
     )
 
 # Tokens for simple symbols
@@ -20,11 +20,16 @@ t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
 t_COMMA = r'\,'
 
 def t_SUBJECT_TO(t):
-	r'(\bsubject\ to\b|\bst\b)'
+	r'(subject\ to|st)'
 	return t
 
+def t_RUN_ON(t):
+    r'(run\ on|run)'
+    return t
+
+
 def t_SOLVE(t):
-    r'\bsolve\b'
+    r'(solve|solver)'
     return t
 
 def t_EQUALITYTOKEN(t):
@@ -119,6 +124,23 @@ def p_statement_subject_to(t):
     'statement : SUBJECT_TO expression EQUALITYTOKEN expression'
     optimization_formulations[-1]["constraints"].append(t)
 
+def p_statement_run_on(t):
+    '''statement : RUN_ON expression
+                 | RUN_ON expression COMMA expression
+                 | RUN_ON expression COMMA expression COMMA expression
+    '''
+    solve_parameters["run_on"] = []
+    if len(t) == 3:
+        solve_parameters["run_on"].append(t[2])
+    if len(t) == 5:
+        solve_parameters["run_on"].append(t[2])
+        solve_parameters["run_on"].append(t[4])
+    if len(t) == 7:
+        solve_parameters["run_on"].append(t[2])
+        solve_parameters["run_on"].append(t[4])
+        solve_parameters["run_on"].append(t[6])
+
+
 def p_statement_solve(t):
     '''statement : SOLVE NAME NAME
     '''
@@ -180,9 +202,11 @@ def parse_optimization_model(user_string, compiler_type="actual"):
 
 if __name__ == "__main__":
     d = """
-min 5*x + 8*y
-subject to x + y == 1
+min 3*x*y + x*z + 4*z*y
+subject to x+y+z == 1
+subject to x-z == 1
 solve prune dwave
-    """
+run on dwave, rigetti, ibm
+"""
     objective_function, constraints, variables, solve_parameters = parse_optimization_model(d.strip())
     import pdb; pdb.set_trace()

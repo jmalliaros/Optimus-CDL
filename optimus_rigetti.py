@@ -42,7 +42,7 @@ def ising_qaoa(model, variables, steps=1, rand_seed=None, connection=None, sampl
     num_variables = len(variables)
     var_to_int = dict(zip(variables, range(num_variables)))
 
-    compiled_model = model.compile()
+    compiled_model = model
     linear, quadratic, offset = compiled_model.to_ising()
 
     cost_operators = []
