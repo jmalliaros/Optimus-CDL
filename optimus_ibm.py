@@ -68,4 +68,4 @@ def run_IBM(H=H, backend = None, num_samples=100,qaoa_steps=20):
     return job.result().get_counts(circ)
 
 result = run_IBM()
-print(result.get_counts())
+print(result)
