@@ -61,10 +61,11 @@ run on dwave, ibm, rigetti
 
 examples.push(`
 // Use Xanadu to find dense subgraphs 
-// for embedding
-min 3*x*y + x*z + 4*z*y
+// for QUBO embedding with Gaussian Boson Sampling
+min 3*x*y + x*z + 4*z*y + 3*k*x
 subject to x+y+z==1
 subject to x-z==1
+subject to x=k*y
 solve prune xanadu
 run on dwave, ibm, rigetti
 `)
