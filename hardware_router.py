@@ -3,6 +3,8 @@ import string
 
 from dwave.system import CutOffComposite
 from optimus_dwave import run_dwave
+from optimus_ibm import run_IBM
+from optimus_rigetti import run_Rigetti
 from convertToH import problemToH
 from optimus_parser import parse_optimization_model
 from pyqubo import Binary
@@ -35,9 +37,11 @@ def route(input_string):
 	# H = eval(objective_function)
 
 	res, qubo, old_qubo = run_dwave(H, solve_parameters=solve_parameters)
+    res_ibm = run_IBM(H)
+    res_rig = run_Rigetti(H)
 
 	shots = []
 	for i,(smpl, energy) in enumerate(res.data(['sample','energy'])):
 	    shots.append([smpl, energy])
 
-	return res, shots, qubo, old_qubo
+	return res, shots, qubo, old_qubo, res_ibm, res_rig
